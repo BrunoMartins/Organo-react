@@ -20,7 +20,7 @@
 }
 
 input:focus {
-    outline: 2px solid #6278F7; /* Define a borda azul de 2 pixels ao focar no campo de entrada */
+    outline: 2px solid #6278F7; 
 }
 
 
