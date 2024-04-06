@@ -3,7 +3,7 @@
 <h2>🔖 Sobre</h2>
 <p>Projeto desenvolvido durante o curso de React da alura. Esse é meu primeiro projeto utilizando React, nessa aplicação podemos cadastrar um colaborador em um dos times de instrutores da Alura. Após o cadastro um card do colaborador será criado e irá ficar exposto dentro do seu respectivo time.</p>
 
-[Acessar a página](https://brunomartins.github.io/Criando-requisi-es/)
+[Acessar a página](https://organo-react-kappa-two.vercel.app/)
 
 ## 🚀 Tecnologias
 <div>
