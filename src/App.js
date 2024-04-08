@@ -62,20 +62,27 @@ function App() {
     localStorage.setItem('colaboradores', JSON.stringify(updatedColaboradores));
   };
 
+  function deletarColaborador() {
+    console.log('deletando colaborador');
+  }
 
 
   return (
     <div className="App">
       <Banner />
       <Formulario times={times.map(time => time.nome)} ColaboradorCadastrado={colaborador => colaboradorAdicionado(colaborador)} />
-      {times.map(time => <Time
-        key={time.nome}
-        nome={time.nome}
-        corPrimaria={time.corPrimaria}
-        corSecundaria={time.corSecundaria}
-        colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}//filtrando para que para cada time durante a interação apareça somente o colaborador que esteja nesse time
-      />)}
-     <Rodape/>
+      <section className="times">
+        <h1>Minha organização</h1>
+        {times.map(time => <Time
+          key={time.nome}
+          nome={time.nome}
+          corPrimaria={time.corPrimaria}
+          corSecundaria={time.corSecundaria}
+          deletar={deletarColaborador}
+          colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}//filtrando para que para cada time durante a interação apareça somente o colaborador que esteja nesse time
+        />)}
+      </section>
+      <Rodape />
     </div>
   );
 }
