@@ -18,16 +18,15 @@
     flex-wrap: wrap;
 }
 
-.input-cor {
-    position: absolute;
-    top: 20px;
-    right: 50px;
+
+.botao-salvar,.botao-cancelar,input{
+    cursor: pointer;
 }
 
-.botao-salvar{
-    position: absolute;
-    top: 20px;
-    right: 10px;
-    cursor: pointer;
+.botoes{
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    gap: 1em;
 
 }

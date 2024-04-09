@@ -10,42 +10,49 @@ function App() {
   const [times, setTimes] = useState([
     {
       nome: 'Programação',
-      corPrimaria: '#57C278'
-
+      corPrimaria: '#57C278',
+      corAnterior: '#57C278'
     },
     {
       nome: 'Front-End',
-      corPrimaria: '#82CFFA'
+      corPrimaria: '#82CFFA',
+      corAnterior: '#82CFFA'
 
     },
     {
       nome: 'Data Sciense',
-      corPrimaria: '#A6D157'
+      corPrimaria: '#A6D157',
+      corAnterior: '#A6D157'
 
     },
     {
       nome: 'Devops',
-      corPrimaria: '#E06B69'
+      corPrimaria: '#E06B69',
+      corAnterior: '#E06B69'
 
     },
     {
       nome: 'UX e Design',
-      corPrimaria: '#D86EBF'
+      corPrimaria: '#D86EBF',
+      corAnterior: '#D86EBF'
 
     },
     {
       nome: 'Mobile',
-      corPrimaria: '#FEBA05'
+      corPrimaria: '#FEBA05',
+      corAnterior: '#FEBA05'
 
     },
     {
       nome: 'Inovação e Gestão',
-      corPrimaria: '#FF8A29'
+      corPrimaria: '#FF8A29',
+      corAnterior: '#FF8A29'
 
     }
   ]);
 
   const [colaboradores, setColaboradores] = useState([])
+
 
   useEffect(() => {
     // Carregar colaboradores salvos na localStorage ao carregar a página
@@ -75,8 +82,14 @@ function App() {
     }));
 }
 
-function salvarAlteracoes() {
+function salvarAlteracoes(nome) {
   // Salvar os times atualizados na localStorage
+  (times.map(time => {
+    if(time.nome === nome) {
+        time.corAnterior = time.corPrimaria;
+    }
+    return time;
+}));
   localStorage.setItem('times', JSON.stringify(times));
 }
 
@@ -88,6 +101,26 @@ function salvarAlteracoes() {
     }
   }, []);
 
+  function cancelarAlteracao(nome){
+    const savedTimes = localStorage.getItem('times');
+    if (savedTimes) {
+      const timesArray = JSON.parse(savedTimes);
+      setTimes(timesArray.map(time=>{
+        if(time.nome ===nome){
+          time.corPrimaria = time.corAnterior;
+        }
+        return time;
+      }));
+    }
+
+    setTimes(times.map(time => {
+      if(time.nome === nome) {
+          time.corPrimaria = time.corAnterior;
+      }
+      return time;
+  }));
+  }
+
   return (
     <div className="App">
       <Banner />
@@ -97,6 +130,7 @@ function salvarAlteracoes() {
         {times.map(time => <Time
           mudarCor={mudarCorDoTime}
           botaoSalvar={salvarAlteracoes}
+          botaoCancelar={cancelarAlteracao}
           key={time.nome}
           nome={time.nome}
           corPrimaria={time.corPrimaria}
