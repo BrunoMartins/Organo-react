@@ -7,43 +7,43 @@ import Rodape from './componentes/Rodape';
 
 function App() {
 
-  const times = [
+  const [times, setTimes] = useState([
     {
       nome: 'Programação',
-      corPrimaria: '#57C278',
-      corSecundaria: '#D9F7E9',
+      corPrimaria: '#57C278'
+
     },
     {
       nome: 'Front-End',
-      corPrimaria: '#82CFFA',
-      corSecundaria: '#E8F8FF',
+      corPrimaria: '#82CFFA'
+
     },
     {
       nome: 'Data Sciense',
-      corPrimaria: '#A6D157',
-      corSecundaria: '#F0F8E2',
+      corPrimaria: '#A6D157'
+
     },
     {
       nome: 'Devops',
-      corPrimaria: '#E06B69',
-      corSecundaria: '#FDE7E8',
+      corPrimaria: '#E06B69'
+
     },
     {
       nome: 'UX e Design',
-      corPrimaria: '#D86EBF',
-      corSecundaria: '#FAE5F5',
+      corPrimaria: '#D86EBF'
+
     },
     {
       nome: 'Mobile',
-      corPrimaria: '#FEBA05',
-      corSecundaria: '#FFF5D9',
+      corPrimaria: '#FEBA05'
+
     },
     {
       nome: 'Inovação e Gestão',
-      corPrimaria: '#FF8A29',
-      corSecundaria: '#FFEEDF',
+      corPrimaria: '#FF8A29'
+
     }
-  ]
+  ]);
 
   const [colaboradores, setColaboradores] = useState([])
 
@@ -66,6 +66,27 @@ function App() {
     console.log('deletando colaborador');
   }
 
+  function mudarCorDoTime(cor, nome) {
+    setTimes(times.map(time => {
+        if(time.nome === nome) {
+            time.corPrimaria = cor;
+        }
+        return time;
+    }));
+}
+
+function salvarAlteracoes() {
+  // Salvar os times atualizados na localStorage
+  localStorage.setItem('times', JSON.stringify(times));
+}
+
+  useEffect(() => {
+    // Carregar times salvos na localStorage ao carregar a página
+    const savedTimes = localStorage.getItem('times');
+    if (savedTimes) {
+      setTimes(JSON.parse(savedTimes));
+    }
+  }, []);
 
   return (
     <div className="App">
@@ -74,10 +95,11 @@ function App() {
       <section className="times">
         <h1>Minha organização</h1>
         {times.map(time => <Time
+          mudarCor={mudarCorDoTime}
+          botaoSalvar={salvarAlteracoes}
           key={time.nome}
           nome={time.nome}
           corPrimaria={time.corPrimaria}
-          corSecundaria={time.corSecundaria}
           deletar={deletarColaborador}
           colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}//filtrando para que para cada time durante a interação apareça somente o colaborador que esteja nesse time
         />)}
