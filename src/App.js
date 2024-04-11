@@ -3,47 +3,55 @@ import Banner from './componentes/Banner';
 import Formulario from './componentes/Formulario';
 import Time from './componentes/Time';
 import Rodape from './componentes/Rodape';
+import { v4 as uuidv4 } from 'uuid';
 
 
 function App() {
 
   const [times, setTimes] = useState([
     {
+      id: uuidv4(),
       nome: 'Programação',
       corPrimaria: '#57C278',
       corAnterior: '#57C278'
     },
     {
+      id: uuidv4(),
       nome: 'Front-End',
       corPrimaria: '#82CFFA',
       corAnterior: '#82CFFA'
 
     },
     {
+      id: uuidv4(),
       nome: 'Data Sciense',
       corPrimaria: '#A6D157',
       corAnterior: '#A6D157'
 
     },
     {
+      id: uuidv4(),
       nome: 'Devops',
       corPrimaria: '#E06B69',
       corAnterior: '#E06B69'
 
     },
     {
+      id: uuidv4(),
       nome: 'UX e Design',
       corPrimaria: '#D86EBF',
       corAnterior: '#D86EBF'
 
     },
     {
+      id: uuidv4(),
       nome: 'Mobile',
       corPrimaria: '#FEBA05',
       corAnterior: '#FEBA05'
 
     },
     {
+      id: uuidv4(),
       nome: 'Inovação e Gestão',
       corPrimaria: '#FF8A29',
       corAnterior: '#FF8A29'
@@ -52,6 +60,8 @@ function App() {
   ]);
 
   const [colaboradores, setColaboradores] = useState([])
+  const [nomeTime, setNomeTime] = useState('')
+    const [corTime, setCorTime] = useState('')
 
 
   useEffect(() => {
@@ -69,23 +79,27 @@ function App() {
     localStorage.setItem('colaboradores', JSON.stringify(updatedColaboradores));
   };
 
-  function deletarColaborador() {
-    console.log('deletando colaborador');
+  function deletarColaborador(id) {
+    const savedColaboradores = JSON.parse(localStorage.getItem('colaboradores'));
+    const colaboradoresFiltrados = savedColaboradores.filter(colaborador => colaborador.id !== id)
+    setColaboradores(colaboradoresFiltrados);
+    localStorage.setItem('colaboradores', JSON.stringify(colaboradoresFiltrados));
+    
   }
 
-  function mudarCorDoTime(cor, nome) {
+  function mudarCorDoTime(cor, id) {
     setTimes(times.map(time => {
-        if(time.nome === nome) {
+        if(time.id === id) {
             time.corPrimaria = cor;
         }
         return time;
     }));
 }
 
-function salvarAlteracoes(nome) {
+function salvarAlteracoes(id) {
   // Salvar os times atualizados na localStorage
   (times.map(time => {
-    if(time.nome === nome) {
+    if(time.id === id) {
         time.corAnterior = time.corPrimaria;
     }
     return time;
@@ -101,12 +115,12 @@ function salvarAlteracoes(nome) {
     }
   }, []);
 
-  function cancelarAlteracao(nome){
+  function cancelarAlteracao(id){
     const savedTimes = localStorage.getItem('times');
     if (savedTimes) {
       const timesArray = JSON.parse(savedTimes);
       setTimes(timesArray.map(time=>{
-        if(time.nome ===nome){
+        if(time.id ===id){
           time.corPrimaria = time.corAnterior;
         }
         return time;
@@ -114,24 +128,41 @@ function salvarAlteracoes(nome) {
     }
 
     setTimes(times.map(time => {
-      if(time.nome === nome) {
+      if(time.id === id) {
           time.corPrimaria = time.corAnterior;
       }
       return time;
   }));
   }
 
+  function cadastrarTime(novoTime){
+    const updatedTimes = [...times, { id: uuidv4(), ...novoTime, corAnterior: novoTime.corPrimaria }];
+    setTimes(updatedTimes);
+    // Salvar os times na localStorage
+    localStorage.setItem('times', JSON.stringify(updatedTimes));
+    setNomeTime('');
+    setCorTime('');
+  }
+
   return (
     <div className="App">
       <Banner />
-      <Formulario times={times.map(time => time.nome)} ColaboradorCadastrado={colaborador => colaboradorAdicionado(colaborador)} />
+      <Formulario 
+      cadastrarTime={cadastrarTime}
+      nomeTime={nomeTime}
+        setNomeTime={setNomeTime} 
+        corTime={corTime} 
+        setCorTime={setCorTime}
+      times={times.map(time => time.nome)} 
+      colaboradorCadastrado={colaborador => colaboradorAdicionado(colaborador)} />
       <section className="times">
         <h1>Minha organização</h1>
         {times.map(time => <Time
+          id={time.id}
           mudarCor={mudarCorDoTime}
           botaoSalvar={salvarAlteracoes}
           botaoCancelar={cancelarAlteracao}
-          key={time.nome}
+          key={time.id}
           nome={time.nome}
           corPrimaria={time.corPrimaria}
           deletar={deletarColaborador}
