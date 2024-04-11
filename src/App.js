@@ -61,7 +61,7 @@ function App() {
 
   const [colaboradores, setColaboradores] = useState([])
   const [nomeTime, setNomeTime] = useState('')
-    const [corTime, setCorTime] = useState('')
+    const [corTime, setCorTime] = useState('#000000')// Se não definir uma cor inicial ele considera vazio e da erro
 
 
   useEffect(() => {
@@ -141,7 +141,17 @@ function salvarAlteracoes(id) {
     // Salvar os times na localStorage
     localStorage.setItem('times', JSON.stringify(updatedTimes));
     setNomeTime('');
-    setCorTime('');
+    setCorTime('#000000');
+  }
+
+  function verificaFavorito(id){
+    const updateFavoritos = colaboradores.map(colaborador => {
+      if(colaborador.id === id) colaborador.favorito = !colaborador.favorito;
+      return colaborador;
+    })
+    setColaboradores(updateFavoritos);
+    localStorage.setItem('colaboradores', JSON.stringify(updateFavoritos));
+
   }
 
   return (
@@ -166,6 +176,7 @@ function salvarAlteracoes(id) {
           nome={time.nome}
           corPrimaria={time.corPrimaria}
           deletar={deletarColaborador}
+          favoritar={verificaFavorito}
           colaboradores={colaboradores.filter(colaborador => colaborador.time === time.nome)}//filtrando para que para cada time durante a interação apareça somente o colaborador que esteja nesse time
         />)}
       </section>

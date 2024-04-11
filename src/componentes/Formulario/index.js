@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Botao from '../Botao';
-import CampoTexto from '../CampoTexto';
+import Campo from '../Campo';
 import ListaSuspensa from '../ListaSuspensa';
 import './Formulario.css';
 import { v4 as uuidv4 } from 'uuid';
@@ -20,6 +20,7 @@ const Formulario = (props) => {
         evento.preventDefault()
         props.colaboradorCadastrado({
             id: uuidv4(),
+            favorito:false,
             nome,
             cargo,
             imagem,
@@ -37,21 +38,21 @@ const Formulario = (props) => {
         <section className="formulario-container">
             <form className="formulario" onSubmit={salvar}>
                 <h2>Preencha os dados para criar o card do colaborador</h2>
-                <CampoTexto
+                <Campo
                     obrigatorio={true}
                     label="Nome"
                     placeholder="Digite seu nome"
                     valor={nome}
                     alterado={valor => setNome(valor)}
                 />
-                <CampoTexto
+                <Campo
                     obrigatorio={true}
                     label="Cargo"
                     placeholder="Digite seu cargo"
                     valor={cargo}
                     alterado={valor => setCargo(valor)}
                 />
-                <CampoTexto
+                <Campo
                     label="Imagem"
                     placeholder="Digite o endereço da imagem"
                     valor={imagem}
@@ -74,15 +75,16 @@ const Formulario = (props) => {
                  props.cadastrarTime({nome: props.nomeTime, corPrimaria: props.corTime});
             }}>
                 <h2>Preencha os dados para criar um novo time.</h2>
-                <CampoTexto
+                <Campo
                     obrigatorio={true}
                     label="Nome"
                     placeholder="Digite o nome do time"
                     valor={props.nomeTime}
                     alterado={valor => props.setNomeTime(valor)}
                 />
-                <CampoTexto
+                <Campo
                     obrigatorio={true}
+                    type="color"
                     label="Cor"
                     placeholder="Digite a cor do time"
                     valor={props.corTime}
