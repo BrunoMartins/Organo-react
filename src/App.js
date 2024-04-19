@@ -4,6 +4,8 @@ import Formulario from './componentes/Formulario';
 import Time from './componentes/Time';
 import Rodape from './componentes/Rodape';
 import { v4 as uuidv4 } from 'uuid';
+import { FaSave } from "react-icons/fa";
+import { BiSolidMessageEdit } from "react-icons/bi";
 
 
 function App() {
@@ -62,6 +64,7 @@ function App() {
   const [colaboradores, setColaboradores] = useState([])
   const [nomeTime, setNomeTime] = useState('')
   const [corTime, setCorTime] = useState('#000000')// Se não definir uma cor inicial ele considera vazio e da erro
+  const [modoEdicao, setModoEdicao] = useState(false);
 
 
   useEffect(() => {
@@ -105,7 +108,7 @@ function App() {
 
   }
 
-  function limparTime(id){
+  function limparTime(id) {
     const timeParaLimpar = times.find(time => time.id === id).nome;
     const colaboradoresAtualizados = colaboradores.filter(colaborador => colaborador.time !== timeParaLimpar);
     setColaboradores(colaboradoresAtualizados);
@@ -122,14 +125,15 @@ function App() {
     }));
   }
 
-  function salvarAlteracoes(id) {
+  function salvarAlteracoes() {
     // Salvar os times atualizados na localStorage
     (times.map(time => {
-      if (time.id === id) {
-        time.corAnterior = time.corPrimaria;
-      }
+
+      time.corAnterior = time.corPrimaria;
+
       return time;
     }));
+    setModoEdicao(false);
     localStorage.setItem('times', JSON.stringify(times));
   }
 
@@ -180,6 +184,10 @@ function App() {
 
   }
 
+  function alternarModoEdicao() {
+    setModoEdicao(!modoEdicao);
+  }
+
   return (
     <div className="App">
       <Banner />
@@ -193,8 +201,19 @@ function App() {
         colaboradorCadastrado={colaborador => colaboradorAdicionado(colaborador)} />
       <section className="times">
         <h1>Minha organização</h1>
+        {modoEdicao ? (
+          <button className='botao-salvar' onClick={salvarAlteracoes}> Salvar alterações
+            <FaSave size={25}/>
+          </button>
+
+        ) : (
+          <button className='botao-edicao' onClick={alternarModoEdicao}>Modo Edição
+            <BiSolidMessageEdit size={25} />
+          </button>
+        )}
         {times.map(time => <Time
-        botaoLimparTime={limparTime}
+          modoEdicao={modoEdicao}
+          botaoLimparTime={limparTime}
           botaoApagarTime={deletarTime}
           id={time.id}
           mudarCor={mudarCorDoTime}

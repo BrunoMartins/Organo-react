@@ -11,5 +11,6 @@
 }
 
 .botao:hover {
-    color: #95FFD4
+    transition: 0.3s;
+    opacity: 0.6;
 }

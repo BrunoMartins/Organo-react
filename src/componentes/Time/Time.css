@@ -19,7 +19,7 @@
 }
 
 
-.botao-salvar,.botao-cancelar,input{
+.botao-cancelar,input{
     cursor: pointer;
 }
 
