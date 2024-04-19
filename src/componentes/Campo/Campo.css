@@ -28,5 +28,10 @@ input:focus {
     padding: 5px 24px;
 }
 
+@media screen and (max-width: 500px){
+    .campo input{
+        font-size: 16px;
+    }
 
+}
 
